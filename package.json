@@ -5,7 +5,13 @@
   "repository": "git@alechp:servexyz/component-generator-cli",
   "author": "alechp <me@alechp.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "babel src --out-dir dist"
+  },
   "dependencies": {
     "vorpal": "^1.12.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.6.0"
   }
 }
