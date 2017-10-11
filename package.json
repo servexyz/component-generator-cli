@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "git@alechp:servexyz/component-generator-cli",
   "author": "alechp <me@alechp.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "vorpal": "^1.12.0"
+  }
 }
