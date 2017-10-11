@@ -1,0 +1,14 @@
+{
+  "Component": {
+    "solo": ["Component.$js"],
+    "solo-test": ["Component.$js", "Component.test.js"],
+    "solo-test-lazy": ["Component.$js", "Component.test.js", "index.js"],
+    "solo-test-style": ["Component.$js", "Component.test.js", "Component.$css"],
+    "solo-test-style-lazy": [
+      "Component.$js",
+      "Component.test.js",
+      "Component.$css",
+      "index.js"
+    ]
+  }
+}

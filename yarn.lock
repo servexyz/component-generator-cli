@@ -529,6 +529,10 @@ invariant@^2.2.2:
   dependencies:
     loose-envify "^1.0.0"
 
+is-empty@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/is-empty/-/is-empty-1.2.0.tgz#de9bb5b278738a05a0b09a57e1fb4d4a341a9f6b"
+
 is-fullwidth-code-point@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-fullwidth-code-point/-/is-fullwidth-code-point-1.0.0.tgz#ef9e31386f031a7f0d643af82fde50c457ef00cb"
@@ -576,9 +580,19 @@ mute-stream@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.5.tgz#8fbfabb0a98a253d3184331f9e8deb7372fac6c0"
 
+node-inserted@*:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/node-inserted/-/node-inserted-0.0.6.tgz#77689e71c4782c4841ee354876a0c2b146857828"
+
 node-localstorage@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/node-localstorage/-/node-localstorage-0.6.0.tgz#45a0601c6932dfde6644a23361f1be173c75d3af"
+
+node-touch@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/node-touch/-/node-touch-0.0.3.tgz#665613dd5029463b05b6d30bcb32c229ef43491f"
+  dependencies:
+    node-inserted "*"
 
 number-is-nan@^1.0.0:
   version "1.0.1"

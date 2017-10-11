@@ -6,9 +6,13 @@
   "author": "alechp <me@alechp.com>",
   "license": "MIT",
   "scripts": {
-    "build": "babel src --out-dir dist"
+    "start": "node index.js",
+    "build": "babel src --out-dir dist",
+    "flow": "flow check"
   },
   "dependencies": {
+    "is-empty": "^1.2.0",
+    "node-touch": "^0.0.3",
     "vorpal": "^1.12.0"
   },
   "devDependencies": {
