@@ -1,8 +1,13 @@
-presets": [
-    ["env", {
-      "targets": {
-        "node": "current"
+{
+  "presets": [
+    "flow",
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current"
+        }
       }
-    }]
+    ]
   ]
 }
