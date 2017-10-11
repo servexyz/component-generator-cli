@@ -1,0 +1,1 @@
+const vorpal = require("vorpal")();
