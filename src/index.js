@@ -12,70 +12,61 @@ const log = console.log;
  3. [required] componentFactory => componentGenerator => directory/files*
 */
 
-var format = path.join(__dirname, "/format.json");
-function getFormatPath(configFilePath: string): string {
-  let cfp = configFilePath;
+var formatFilePath = path.join(__dirname, "/format.json");
+function getFormatPath(filePath: string = formatFilePath): string {
+  let cfp = filePath;
   if (!empty(cfp)) {
-    format = cfp;
+    return cfp;
   }
-  return format;
+  return null;
 }
-
-/*
-------------------------------------------
-The following two examples are equivalent
-------------------------------------------
-Manual (without format.json):
-  @@structure: ["Component.$js, Component.test.js", "index.js"]
-  @@extensions: { "$js": "js", "$css": "scss"}
-
-Standard (with format.json):
-  @@structure: "solo"
-  @@extensions:  "js-scss"
-*/
+function grabValueOfKeyFromObject(key, obj) {
+  for (const [k, v] of Object.entries(obj)) {
+    if (k == key) {
+      return v;
+    }
+  }
+}
 function parseFormat(
   structure: Array<string> | string = "solo-test-lazy",
   extensions: Array<string> | string = "vanilla"
-): Array<string> {
-  let formatStructureArr: Array<string>;
-  let formatExtensionArr: Array<string>;
+): Array<mixed> {
+  /*
+    ------------------------------------------
+    The following two examples are equivalent
+    ------------------------------------------
+    Manual (without format.json):
+    @@structure: ["Component.$js, Component.test.js", "index.js"]
+    @@extensions: { "$js": "js", "$css": "scss"}
+
+    Standard (with format.json):
+    @@structure: "solo"
+    @@extensions:  "js-scss"
+  */
   if (typeof structure === "string" && typeof extensions === "string") {
+    // EXTRACT AND SPLIT
+    let formatObject = require(getFormatPath());
+    let formatStructure = formatObject.structure;
+    let formatExtensions = formatObject.extensions;
+    //
     let extKey: string = extensions;
     let structKey: string = structure;
-    let formatObject = {};
-    log(`format location: ${format}`);
-    fs.readFile(format, "utf8", (err, data) => {
-      if (err) {
-        console.error(`Failed to read file. ${err}`);
-      }
-      formatObject = data;
-      log(`Format obj: ${data}`);
-    });
-    // var formatStructure = formatObject.structure;
-    // var formatExtensions = formatObject.extensions;
-    // for (const [key, value] of Object.entries(formatStructure)) {
-    //   log(`key: ${key} val: ${value}`);
-    //   if (key == structKey) {
-    //     formatSructureArray = value;
-    //   }
-    // }
-    // for (const [key, value] of Object.entries(formatExtensions)) {
-    //   log(`key: ${key} val: ${value}`);
-    //   if (key == extKey) {
-    //     formatExtensionArr = value;
-    //   }
+    let formatStructureArr: Array<string> = grabValueOfKeyFromObject(
+      structKey,
+      formatStructure
+    );
+    let formatExtensionsObj: mixed = grabValueOfKeyFromObject(
+      extKey,
+      formatExtensions
+    );
   }
 }
-//   log("formatStructure: " + String(formatStructureArr));
-//   log("formatExtension: " + String(formatExtensionArr));
-// }
 
 function fileFactory(
   rootCreationLocation: string = "/",
   directoryNames: Array<string>
 ) {
   let locale = path.join(process.cwd(), rootCreationLocation);
-  log(`Locale: ${locale}`);
 }
 
 fileFactory();
