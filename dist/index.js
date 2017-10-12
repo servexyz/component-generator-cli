@@ -14,6 +14,9 @@ const log = console.log;
 */
 
 var formatFilePath = path.join(__dirname, "/format.json");
+var formatStructureArr = [];
+var formatExtensionsObj = {};
+
 function getFormatPath(filePath = formatFilePath) {
   let cfp = filePath;
   if (!empty(cfp)) {
@@ -21,6 +24,7 @@ function getFormatPath(filePath = formatFilePath) {
   }
   return null;
 }
+
 function grabValueOfKeyFromObject(key, obj) {
   for (const [k, v] of Object.entries(obj)) {
     if (k == key) {
@@ -28,6 +32,7 @@ function grabValueOfKeyFromObject(key, obj) {
     }
   }
 }
+
 function parseFormat(structure = "solo-test-lazy", extensions = "vanilla") {
   /*
     ------------------------------------------
@@ -50,15 +55,18 @@ function parseFormat(structure = "solo-test-lazy", extensions = "vanilla") {
     let structKey = structure;
     let formatStructureArr = grabValueOfKeyFromObject(structKey, formatStructure);
     let formatExtensionsObj = grabValueOfKeyFromObject(extKey, formatExtensions);
+    log(formatStructureArr);
   }
 }
 
 function fileFactory(rootCreationLocation = "/", directoryNames) {
   let locale = path.join(process.cwd(), rootCreationLocation);
-  log(`Locale: ${locale}`);
-  let vals = parseFormat();
-  log("vals" + vals);
+  log(`directoryNames: ${directoryNames}`);
 }
 
-fileFactory();
-parseFormat();
+vorpal.command("m [components...]", "Creates 1 or more component directories").action(function (args, cb) {
+  fileFactory("/", args.components);
+  cb();
+});
+
+vorpal.delimiter("component-factory-cli$").show();
