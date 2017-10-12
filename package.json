@@ -6,8 +6,8 @@
   "author": "alechp <me@alechp.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "build": "babel src --out-dir dist",
+    "start": "npm run build && node dist/index.js",
+    "build": "babel src --out-dir dist --copy-files",
     "test": "jest",
     "flow": "flow check"
   },
@@ -19,6 +19,7 @@
     "vorpal": "^1.12.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "flow-bin": "^0.56.0"
   },

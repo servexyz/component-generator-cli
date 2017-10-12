@@ -1,4 +1,5 @@
-/* @flow */
+"use strict";
+
 const vorpal = require("vorpal")();
 const fs = require("fs");
 const path = require("path");
@@ -13,7 +14,7 @@ const log = console.log;
 */
 
 var format = path.join(__dirname, "/format.json");
-function getFormatPath(configFilePath: string): string {
+function getFormatPath(configFilePath) {
   let cfp = configFilePath;
   if (!empty(cfp)) {
     format = cfp;
@@ -33,15 +34,12 @@ Standard (with format.json):
   @@structure: "solo"
   @@extensions:  "js-scss"
 */
-function parseFormat(
-  structure: Array<string> | string = "solo-test-lazy",
-  extensions: Array<string> | string = "vanilla"
-): Array<string> {
-  let formatStructureArr: Array<string>;
-  let formatExtensionArr: Array<string>;
+function parseFormat(structure = "solo-test-lazy", extensions = "vanilla") {
+  let formatStructureArr;
+  let formatExtensionArr;
   if (typeof structure === "string" && typeof extensions === "string") {
-    let extKey: string = extensions;
-    let structKey: string = structure;
+    let extKey = extensions;
+    let structKey = structure;
     let formatObject = {};
     log(`format location: ${format}`);
     fs.readFile(format, "utf8", (err, data) => {
@@ -70,10 +68,7 @@ function parseFormat(
 //   log("formatExtension: " + String(formatExtensionArr));
 // }
 
-function fileFactory(
-  rootCreationLocation: string = "/",
-  directoryNames: Array<string>
-) {
+function fileFactory(rootCreationLocation = "/", directoryNames) {
   let locale = path.join(process.cwd(), rootCreationLocation);
   log(`Locale: ${locale}`);
 }
