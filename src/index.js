@@ -1,4 +1,5 @@
-/* @flow */
+// @flow
+
 const vorpal = require("vorpal")();
 const fs = require("fs");
 const path = require("path");
