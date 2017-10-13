@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const empty = require("is-empty");
 const log = console.log;
+const { COMPONENT, COMPONENT_EXPORT } = require("./templates.js");
 
 /*
  Procedural Steps;
@@ -17,12 +18,10 @@ var formatFilePath = path.join(__dirname, "/format.json");
 var formatStructureArr = [];
 var formatExtensionsObj = {};
 
-function getFormatPath(filePath = formatFilePath) {
-  let cfp = filePath;
-  if (!empty(cfp)) {
-    return cfp;
-  }
-  return null;
+function getFormatPath(filePath) {
+  return new Promise((resolve, reject) => {
+    !empty(filePath) ? resolve(filePath) : reject(`Filepath wasn't provided to getFormatPath. Pass <string> formatFilePath as default`);
+  });
 }
 
 function grabValueOfKeyFromObject(key, obj) {
@@ -33,7 +32,7 @@ function grabValueOfKeyFromObject(key, obj) {
   }
 }
 
-function parseFormat(structure = "solo-test-lazy", extensions = "vanilla") {
+async function parseFormat(structure = "solo-test-lazy", extensions = "vanilla") {
   /*
     ------------------------------------------
     The following two examples are equivalent
@@ -47,17 +46,26 @@ function parseFormat(structure = "solo-test-lazy", extensions = "vanilla") {
   */
   if (typeof structure === "string" && typeof extensions === "string") {
     // EXTRACT AND SPLIT
-    let formatObject = require(getFormatPath());
+    let formatPath = "";
+    log(`${formatFilePath}`);
+    try {
+      formatPath = await getFormatPath(formatFilePath);
+    } catch (error) {
+      throw new Error(error);
+    }
+    let formatObject = require(formatPath);
     let formatStructure = formatObject.structure;
     let formatExtensions = formatObject.extensions;
     //
     let extKey = extensions;
     let structKey = structure;
-    let formatStructureArr = grabValueOfKeyFromObject(structKey, formatStructure);
-    let formatExtensionsObj = grabValueOfKeyFromObject(extKey, formatExtensions);
+    let formatStructureOption = this.grabValueOfKeyFromObject(structKey, formatStructure);
+    let formatExtensionsOption = this.grabValueOfKeyFromObject(extKey, formatExtensions);
     log(formatStructureArr);
   }
 }
+
+function parseTemplate(template, componentName) {}
 
 function fileFactory(rootCreationLocation = "/", directoryNames) {
   let locale = path.join(process.cwd(), rootCreationLocation);

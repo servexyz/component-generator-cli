@@ -18,15 +18,10 @@ var formatFilePath: string = path.join(__dirname, "/format.json");
 var formatStructureArr: Array<string> = [];
 var formatExtensionsObj: mixed = {};
 
-function getFormatPath(filePath: string = formatFilePath): string {
-  let cfp = filePath;
-  if (!empty(cfp)) {
-    return cfp;
-  }
-  return null;
-}
-
-function grabValueOfKeyFromObject(key, obj) {
+function grabValueOfKeyFromObject(
+  key: string,
+  obj: mixed
+): Array<string> | mixed {
   for (const [k, v] of Object.entries(obj)) {
     if (k == key) {
       return v;
@@ -37,7 +32,7 @@ function grabValueOfKeyFromObject(key, obj) {
 function parseFormat(
   structure: Array<string> | string = "solo-test-lazy",
   extensions: Array<string> | string = "vanilla"
-): Array<mixed> {
+) {
   /*
     ------------------------------------------
     The following two examples are equivalent
@@ -52,17 +47,18 @@ function parseFormat(
   */
   if (typeof structure === "string" && typeof extensions === "string") {
     // EXTRACT AND SPLIT
-    let formatObject = require(getFormatPath());
-    let formatStructure = formatObject.structure;
-    let formatExtensions = formatObject.extensions;
+    let formatPath: string = formatFilePath;
+    let formatObject: Object = require(formatPath);
+    let formatStructure: Array<string> = formatObject.structure;
+    let formatExtensions: mixed = formatObject.extensions;
     //
     let extKey: string = extensions;
     let structKey: string = structure;
-    let formatStructureArr: Array<string> = grabValueOfKeyFromObject(
+    let formatStructureOption: Array<string> = this.grabValueOfKeyFromObject(
       structKey,
       formatStructure
     );
-    let formatExtensionsObj: mixed = grabValueOfKeyFromObject(
+    let formatExtensionsOption: mixed = this.grabValueOfKeyFromObject(
       extKey,
       formatExtensions
     );
@@ -77,7 +73,7 @@ function fileFactory(
   directoryNames: Array<string>
 ) {
   let locale = path.join(process.cwd(), rootCreationLocation);
-  log(`directoryNames: ${directoryNames}`);
+  log(`directoryNames: ${String(directoryNames)}`);
 }
 
 vorpal
