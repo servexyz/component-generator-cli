@@ -8,12 +8,16 @@ const log = console.log;
 const { COMPONENT, COMPONENT_EXPORT } = require("./templates.js");
 
 /*
- Procedural Steps;
- 1. [optional] setFormat()
- 2. [required] parseFormat(format.structure, format.extensions)
- 3. [required] componentFactory => componentGenerator => directory/files*
+  Procedural Steps;
+  =================
+  <cfc>index::
+    <cfc>parseFormat: gets structure and extensions
+    <cfc>parseTemplate: gets template and interpolates with parsed format
+    <cfc>fileFactory
+      <cfc>createDirectory: creates directory
+      <cfc>createFile: creates all empty files
+      <fs>writeFile: write all templated files
 */
-
 var formatFilePath: string = path.join(__dirname, "/format.json");
 var formatStructureArr: Array<string> = [];
 var formatExtensionsObj: mixed = {};
@@ -65,8 +69,16 @@ function parseFormat(
     log(formatStructureArr);
   }
 }
-
-function parseTemplate(template, componentName) {}
+function createFile(fileName: string, creationLocation: string = "/") {
+  fs.writeFile(fileName, "", "utf-8", error => {
+    error
+      ? console.error("createFile() failed")
+      : log(
+          `${fileName} was created here: ${process.cwd()}/${creationLocation}/${fileName}`
+        );
+  });
+}
+function parseTemplate(template: string, componentName: string) {}
 
 function fileFactory(
   rootCreationLocation: string = "/",
