@@ -58,6 +58,7 @@ async function parseFormat(structure = "solo-test-lazy", extensions = "vanilla")
   }
   return flag;
 }
+
 function createFile(fileName, creationLocation = "/") {
   fs.writeFile(fileName, "", "utf-8", error => {
     error ? console.error("createFile() failed") : log(`${fileName} was created here: ${process.cwd()}/${creationLocation}/${fileName}`);
@@ -65,17 +66,16 @@ function createFile(fileName, creationLocation = "/") {
 }
 // function parseTemplate(template: string, componentName: string) {}
 
-async function fileFactory(rootCreationLocation = "/", directoryNames) {
-  let locale = path.join(process.cwd(), rootCreationLocation);
-  log(`directoryNames: ${String(directoryNames)}`);
-  return directoryNames;
-}
-
-module.exports = async function factory() {
+async function factory(directoryNames, rootCreationLocation = "/") {
+  log(`inside factory`);
   try {
-    let format = await this.parseFormat();
-    let fileFactory = await this.fileFactory();
+    let locale = path.join(process.cwd(), rootCreationLocation);
+    log(`directoryNames: ${JSON.stringify(directoryNames)}`);
+    return directoryNames;
   } catch (error) {
     console.error(`Factory failed. ${error}`);
+    return false;
   }
-};
+}
+
+module.exports = factory;

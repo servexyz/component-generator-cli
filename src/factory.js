@@ -81,20 +81,19 @@ function createFile(fileName: string, creationLocation: string = "/") {
 }
 // function parseTemplate(template: string, componentName: string) {}
 
-async function fileFactory(
-  rootCreationLocation: string = "/",
-  directoryNames: Array<string>
+async function factory(
+  directoryNames: Array<string>,
+  rootCreationLocation: string = "/"
 ) {
-  let locale = path.join(process.cwd(), rootCreationLocation);
-  log(`directoryNames: ${String(directoryNames)}`);
-  return directoryNames;
-}
-
-async function factory() {
+  log(`inside factory`);
   try {
-    let format = await parseFormat();
-    let fileFactory = await fileFactory();
+    let locale = path.join(process.cwd(), rootCreationLocation);
+    log(`directoryNames: ${JSON.stringify(directoryNames)}`);
+    return directoryNames;
   } catch (error) {
     console.error(`Factory failed. ${error}`);
+    return false;
   }
 }
+
+module.exports = factory;
