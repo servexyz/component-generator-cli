@@ -48,28 +48,19 @@ async function parseFormat(
   */
   let flag: boolean = false;
   if (typeof structure === "string" && typeof extensions === "string") {
-    // EXTRACT AND SPLIT
     let formatPath: string = formatFilePath;
     let formatObject: Object = require(formatPath);
     let formatStructure: Array<string> = formatObject.structure;
     let formatExtensions: mixed = formatObject.extensions;
-    //
     let extKey: string = extensions;
     let structKey: string = structure;
-    let formatStructureOption: Array<string> = grabValueOfKeyFromObject(
-      structKey,
-      formatStructure
-    );
-    let formatExtensionsOption: mixed = grabValueOfKeyFromObject(
-      extKey,
-      formatExtensions
-    );
+    formatStructureArr = grabValueOfKeyFromObject(structKey, formatStructure);
+    formatExtensionsObj = grabValueOfKeyFromObject(extKey, formatExtensions);
     flag = true;
-    log(formatStructureArr);
   }
   return flag;
 }
-
+async function interpolateTemplate(component) {}
 function createFile(fileName: string, creationLocation: string = "/") {
   fs.writeFile(fileName, "", "utf-8", error => {
     error
