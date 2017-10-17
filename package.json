@@ -1,8 +1,8 @@
 {
-  "name": "component-generator-cli",
-  "version": "1.0.0",
+  "name": "@bubblegum/component-generator-cli",
+  "version": "0.5.0",
   "main": "index.js",
-  "repository": "git@alechp:servexyz/component-generator-cli",
+  "repository": "https://github.com/servexyz/component-generator-cli",
   "author": "alechp <me@alechp.com>",
   "license": "MIT",
   "scripts": {
@@ -14,13 +14,14 @@
   "dependencies": {
     "is-empty": "^1.2.0",
     "jest": "^21.2.1",
+    "mkdirp": "^0.5.1",
     "node-touch": "^0.0.3",
     "vorpal": "^1.12.0"
   },
   "devDependencies": {
-    "babel-preset-flow": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.56.0"
   },
   "jest": {
