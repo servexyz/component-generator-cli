@@ -44,12 +44,13 @@ function parseFormat(structure: Array<string> | string = "solo-test-lazy") {
   return flag;
 }
 
-async function interpolateFileContent(component) {}
+// async function interpolateFileContent(component) {}
 async function interpolateFileNames(component: string) {
   let struct: Array<string> = formatStructureArr; //this global var was instantiated in parseFormat()
   struct.map(val => {
     return val.replace("Component", component);
   });
+  log(`Struct: ${struct}`);
 }
 function createDirectory(directoryName: string) {
   mkdirp(directoryName, err => {
@@ -68,19 +69,22 @@ function createFile(filePath: string) {
         );
   });
 }
-async function createFileFactory(
-  component: Array<string>,
+async function createComponentFiles(
+  component: string,
   componentDirectory: string = "/"
 ) {
   //Note: need to mutate c to include the entire path
   log(`component: ${component} && dir: ${componentDirectory}`);
   try {
     //TODO: call interpolate strings
-    let where = path.join(process.cwd(), c);
-    createFile(c);
-    log(`Where: ${where}`);
+    let filePaths: Array<string> = interpolateFileNames(component);
+    for (let f of filePaths) {
+      let here = path.join(process.cwd(), f);
+      createFile(here);
+      log(`Here: ${here}`);
+    }
   } catch (error) {
-    console.error(`createFileFactory failed. ${error}`);
+    console.error(`createComponentFiles failed. ${error}`);
   }
 }
 async function factory(
@@ -99,7 +103,7 @@ async function factory(
         let newDirectory = c + location;
         log(`newDirectory: ${newDirectory}`);
         createdDirectories.push(newDirectory);
-        createFileFactory(c, newDirectory);
+        createComponentFiles(c, newDirectory);
         //todo: call createFilesFactory
       }
       return true;
