@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-const COMPONENT = exports.COMPONENT = `
+const COMPONENT = (exports.COMPONENT = `
   import React from 'react';
   import PropTypes from 'prop-types';
 
@@ -28,11 +28,11 @@ const COMPONENT = exports.COMPONENT = `
       )
     }
   }
-`;
-const COMPONENT_EXPORT = exports.COMPONENT_EXPORT = `
+`);
+const COMPONENT_EXPORT = (exports.COMPONENT_EXPORT = `
   import $Component from './$Component';
 
   export default { $Component };
-`;
-const COMPONENT_TEST = exports.COMPONENT_TEST = ``;
-const COMPONENT_CSS = exports.COMPONENT_CSS = ``;
+`);
+const COMPONENT_TEST = (exports.COMPONENT_TEST = ``);
+const COMPONENT_CSS = (exports.COMPONENT_CSS = ``);

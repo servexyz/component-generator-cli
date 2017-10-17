@@ -1,13 +1,66 @@
 const fs = require("fs");
-const path = require("path");
-const empty = require("is-empty");
 const mkdirp = require("mkdirp");
-const log = console.log;
+const path = require("path");
 const chalk = require("chalk");
-const { COMPONENT, COMPONENT_EXPORT } = require("./templates.js");
+const log = console.log;
 
-var formatFilePath: string = path.join(__dirname, "/format.json");
-var formatStructureArr: Array<string> = [];
+function factory(
+  components: Array<string>,
+  fileStructure: string = "solo-test-lazy"
+) {
+  components.map(c => {
+    let dir = createDirectory(c);
+    log(`Dir: ${dir}`);
+    try {
+      let files: Array<string> = createFiles(fileStructure, c, dir);
+      return files;
+    } catch (error) {
+      console.error(`${chalk.red("createFiles in factory failed.")} ${error}`);
+    }
+  });
+}
+function createDirectory(component: string) {
+  mkdirp(component, err => {
+    err
+      ? console.error(`Failed to createDirectory. ${err}`)
+      : log(`${component}`);
+  });
+  return component;
+}
+function createFile(component: string) {
+  fs.writeFile(component, "", "utf-8", error => {
+    error
+      ? console.error(`createFile() failed. ${error}`)
+      : log(`${component} was created`);
+  });
+}
+function createFiles(preferredFileStructure, component, directory) {
+  var formatConfig: string = path.join(__dirname, "/format.json");
+  var formatObject: Object = require(formatConfig);
+  var structure: Array<string> = formatObject.structure;
+
+  let templatedFileNames = grabValueOfKeyFromObject(
+    preferredFileStructure,
+    structure
+  );
+  log(`\n\nTemplatedFileNames: ${templatedFileNames}`);
+  log("\n\nStructure: " + JSON.stringify(structure));
+  if (templatedFileNames) {
+    let files = templatedFileNames.map(tfn => {
+      let file = tfn.replace(/([A-Z])\w+/, component);
+      let here = path.join(process.cwd(), directory, file);
+      createFile(here);
+    });
+    return files;
+  } else {
+    console.log(
+      `${chalk.red(
+        "templatedFileNames isn't defined. Current value: "
+      )} ${templatedFileNames}`
+    );
+    return false;
+  }
+}
 
 function grabValueOfKeyFromObject(
   key: string,
@@ -20,83 +73,4 @@ function grabValueOfKeyFromObject(
   }
 }
 
-function parseFormat(structure: Array<string> | string = "solo-test-lazy") {
-  /*
-    ------------------------------------------
-    The following two examples are equivalent
-    ------------------------------------------
-    Manual (without format.json):
-    @@structure: ["Component.$js, Component.test.js", "index.js"]
-    @@extensions: { "$js": "js", "$css": "scss"}
-
-    Standard (with format.json):
-    @@structure: "solo"
-    @@extensions:  "js-scss"
-  */
-  let flag: boolean = false;
-  if (typeof structure === "string") {
-    let formatPath: string = formatFilePath;
-    let formatObject: Object = require(formatPath);
-    let formatStructure: Array<string> = formatObject.structure;
-    let structKey: string = structure;
-    formatStructureArr = grabValueOfKeyFromObject(structKey, formatStructure);
-    flag = true;
-  }
-  return flag;
-}
-
-// async function interpolateFileContent(component) {}
-function interpolateFileNames(component: string): Array<string> {
-  let struct: Array<string> = formatStructureArr; //this global var was instantiated in parseFormat()
-  let regex = /([A-Z])\w+/;
-  let fileNames: Array<string> = struct.map(file => {
-    file.replace(regex, component);
-  });
-  log(`\n\nfileNames in interpolateFileNames: ${String(fileNames)}\n\n`);
-  return fileNames;
-}
-function createDirectory(directoryName: string) {
-  mkdirp(directoryName, err => {
-    err
-      ? console.error(`createDirectory failed: ${err}`)
-      : console.log(`${directoryName} was created.`);
-  });
-}
-
-function createFile(filePath: string) {
-  fs.writeFile(filePath, "", "utf-8", error => {
-    error
-      ? console.error(`createFile() failed. ${error}`)
-      : log(`${filePath} was created`);
-  });
-}
-function createComponentFiles(
-  component: string,
-  componentDirectory: string = "/"
-) {
-  //Note: need to mutate c to include the entire path
-  log(`component: ${chalk.red(component)} && dir: ${componentDirectory}`);
-  //TODO: call interpolate strings
-  let filePaths: Array<string> = interpolateFileNames(component);
-  log(`\nfilePaths: ${String(filePaths)}`);
-  for (let f of filePaths) {
-    let here = path.join(componentDirectory, f);
-    createFile(here);
-    log(`${chalk.yellow("Here: " + here)}`);
-  }
-}
-function factory(components: Array<string>) {
-  let flag: boolean = false;
-  if (parseFormat()) {
-    for (let c of components) {
-      let location = process.cwd();
-      let newDirectory = location + c + "/";
-      createDirectory(c, location);
-      log(`newDirectory: ${newDirectory}`);
-      createComponentFiles(c, newDirectory);
-    }
-    flag = true;
-  }
-  return flag;
-}
 module.exports = factory;
