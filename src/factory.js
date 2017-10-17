@@ -82,11 +82,14 @@ function createFile(filePath: string) {
 }
 async function createFileFactory(
   components: Array<string>,
-  creationLocation: string = "/"
+  componentDirectory: string = "/"
 ) {
+  //Note: need to mutate c to include the entire path
   try {
     for (let c of components) {
+      let where = path.join(process.cwd(), c);
       createFile(c);
+      log(`Where: ${where}`);
     }
   } catch (error) {
     console.error(`createFileFactory failed. ${error}`);

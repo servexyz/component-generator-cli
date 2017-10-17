@@ -58,29 +58,33 @@ function parseFormat(structure = "solo-test-lazy", extensions = "vanilla") {
 }
 
 async function interpolateTemplate(component) {}
-function createDirectory(directoryName, creationLocation = "/") {
-  let where = path.join(process.cwd(), creationLocation, directoryName);
-  mkdirp(where, err => {
-    err ? console.error(`createDirectory failed: ${err}`) : console.log(`Directory: ${where} was created`);
+function createDirectory(directoryName) {
+  mkdirp(directoryName, err => {
+    err ? console.error(`createDirectory failed: ${err}`) : console.log(`${directoryName} was created.`);
   });
 }
 
-function createFile(filePath, creationLocation = "/") {
+function createFile(filePath) {
   fs.writeFile(filePath, "", "utf-8", error => {
     error ? console.error("createFile() failed") : log(`${filePath} was created here: ${process.cwd()}/${creationLocation}/${filePath}`);
   });
 }
-async function createFileFactory(components, creationLocation = "/") {
+async function createFileFactory(components, componentDirectory = "/") {
+  //Note: need to mutate c to include the entire path
   try {
     for (let c of components) {
+      let where = path.join(process.cwd(), c);
       createFile(c);
+      log(`Where: ${where}`);
     }
   } catch (error) {
     console.error(`createFileFactory failed. ${error}`);
   }
 }
 async function factory(components, rootCreationLocation = "/") {
-  log(`process.cwd(): ${process.cwd()}`);
+  /* Note:
+    path.join will only occur in factory to ensure no conflicts. Treated similar to dumb components with no state.
+    */
   let createdDirectories = [];
   if (parseFormat()) {
     try {
