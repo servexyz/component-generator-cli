@@ -69,11 +69,13 @@ function createFile(filePath) {
     error ? console.error("createFile() failed") : log(`${filePath} was created here: ${process.cwd()}/${creationLocation}/${filePath}`);
   });
 }
-async function createFileFactory(components, componentDirectory = "/") {
+async function createFileFactory(component, componentDirectory = "/") {
   //Note: need to mutate c to include the entire path
+  log(`component: ${component} && dir: ${componentDirectory}`);
   try {
     for (let c of components) {
       let where = path.join(process.cwd(), c);
+      //TODO: call interpolate strings
       createFile(c);
       log(`Where: ${where}`);
     }
@@ -82,9 +84,9 @@ async function createFileFactory(components, componentDirectory = "/") {
   }
 }
 async function factory(components, rootCreationLocation = "/") {
-  /* Note:
-    path.join will only occur in factory to ensure no conflicts. Treated similar to dumb components with no state.
-    */
+  /*
+    Note: path.join will only occur in factory to ensure no conflicts. Treated similar to dumb components with no state.
+  */
   let createdDirectories = [];
   if (parseFormat()) {
     try {
@@ -94,6 +96,8 @@ async function factory(components, rootCreationLocation = "/") {
         let newDirectory = c + location;
         log(`newDirectory: ${newDirectory}`);
         createdDirectories.push(newDirectory);
+        createFileFactory(c, newDirectory);
+        //todo: call createFilesFactory
       }
       return true;
     } catch (error) {

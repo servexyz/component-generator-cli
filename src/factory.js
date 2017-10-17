@@ -5,20 +5,8 @@ const mkdirp = require("mkdirp");
 const log = console.log;
 const { COMPONENT, COMPONENT_EXPORT } = require("./templates.js");
 
-/*
-  Procedural Steps;
-  =================
-  <cfc>index::
-    <cfc>parseFormat: gets structure and extensions
-        <cfc>fileFactory
-          <cfc>createDirectory: creates directory
-          <cfc>parseTemplate: gets template and interpolates with parsed format
-          <cfc>createFile: creates all empty files
-          <fs>writeFile: write all templated files
-*/
 var formatFilePath: string = path.join(__dirname, "/format.json");
 var formatStructureArr: Array<string> = [];
-var formatExtensionsObj: mixed = {};
 
 function grabValueOfKeyFromObject(
   key: string,
@@ -31,10 +19,7 @@ function grabValueOfKeyFromObject(
   }
 }
 
-function parseFormat(
-  structure: Array<string> | string = "solo-test-lazy",
-  extensions: Array<string> | string = "vanilla"
-) {
+function parseFormat(structure: Array<string> | string = "solo-test-lazy") {
   /*
     ------------------------------------------
     The following two examples are equivalent
@@ -48,21 +33,21 @@ function parseFormat(
     @@extensions:  "js-scss"
   */
   let flag: boolean = false;
-  if (typeof structure === "string" && typeof extensions === "string") {
+  if (typeof structure === "string") {
     let formatPath: string = formatFilePath;
     let formatObject: Object = require(formatPath);
     let formatStructure: Array<string> = formatObject.structure;
-    let formatExtensions: mixed = formatObject.extensions;
-    let extKey: string = extensions;
     let structKey: string = structure;
     formatStructureArr = grabValueOfKeyFromObject(structKey, formatStructure);
-    formatExtensionsObj = grabValueOfKeyFromObject(extKey, formatExtensions);
     flag = true;
   }
   return flag;
 }
 
-async function interpolateTemplate(component) {}
+async function interpolateFileContent(component) {}
+async function interpolateFileNames(component: string) {
+  let struct: Array<string> = formatStructureArr;
+}
 function createDirectory(directoryName: string) {
   mkdirp(directoryName, err => {
     err
@@ -81,16 +66,16 @@ function createFile(filePath: string) {
   });
 }
 async function createFileFactory(
-  components: Array<string>,
+  component: Array<string>,
   componentDirectory: string = "/"
 ) {
   //Note: need to mutate c to include the entire path
+  log(`component: ${component} && dir: ${componentDirectory}`);
   try {
-    for (let c of components) {
-      let where = path.join(process.cwd(), c);
-      createFile(c);
-      log(`Where: ${where}`);
-    }
+    //TODO: call interpolate strings
+    let where = path.join(process.cwd(), c);
+    createFile(c);
+    log(`Where: ${where}`);
   } catch (error) {
     console.error(`createFileFactory failed. ${error}`);
   }
@@ -99,9 +84,9 @@ async function factory(
   components: Array<string>,
   rootCreationLocation: string = "/"
 ) {
-  /* Note:
-    path.join will only occur in factory to ensure no conflicts. Treated similar to dumb components with no state.
-    */
+  /*
+    Note: path.join will only occur in factory to ensure no conflicts. Treated similar to dumb components with no state.
+  */
   let createdDirectories: Array<string> = [];
   if (parseFormat()) {
     try {
@@ -111,6 +96,8 @@ async function factory(
         let newDirectory = c + location;
         log(`newDirectory: ${newDirectory}`);
         createdDirectories.push(newDirectory);
+        createFileFactory(c, newDirectory);
+        //todo: call createFilesFactory
       }
       return true;
     } catch (error) {
