@@ -4,12 +4,16 @@ const path = require("path");
 const chalk = require("chalk");
 const log = console.log;
 
-function factory(components) {
+function factory(
+  components: Array<string>,
+  fileStructure: string = "solo-test-lazy"
+) {
   log(`Components being passed: ${components}`);
   components.map(c => {
     let dir = createDirectory(c);
+    log(`Dir: ${dir}`);
     try {
-      let files: Array<string> = createFiles(c, dir);
+      let files: Array<string> = createFiles(fileStructure, c, dir);
       return files;
     } catch (error) {
       console.error(`${chalk.red("createFiles in factory failed.")} ${error}`);
@@ -33,24 +37,34 @@ function createFile(component: string) {
       : log(`${component} was created`);
   });
 }
-function createFiles(component, directory) {
+function createFiles(preferredFileStructure, component, directory) {
   var formatConfig: string = path.join(__dirname, "/format.json");
   var formatObject: Object = require(formatConfig);
   var structure: Array<string> = formatObject.structure;
-  let templatedFileNames = grabValueOfKeyFromObject("structure", structure);
+
+  let templatedFileNames = grabValueOfKeyFromObject(
+    preferredFileStructure,
+    structure
+  );
   log(`\n\nTemplatedFileNames: ${templatedFileNames}`);
   log("\n\nStructure: " + JSON.stringify(structure));
-  if (structure) {
+  if (templatedFileNames) {
     let files = templatedFileNames.map(tfn => {
       let file = tfn.replace(/([A-Z])\w+/, component);
+      log(`File: ${file}`);
+      log(`process.cwd(): ${process.cwd()}`);
+      log(`directory: ${directory}`);
+      log(`file: ${file}`);
       let here = path.join(process.cwd(), directory, file);
-      log(`${chalk.green("Here: " + here)}`);
-      return createFile(here);
+      log(`Here: ${here}`);
+      createFile(here);
     });
     return files;
   } else {
     console.log(
-      `${chalk.red("structure isn't defined. Current value: ")} ${structure}`
+      `${chalk.red(
+        "templatedFileNames isn't defined. Current value: "
+      )} ${templatedFileNames}`
     );
     return false;
   }
