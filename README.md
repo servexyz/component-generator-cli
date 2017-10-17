@@ -41,8 +41,8 @@ https://github.com/isaacs/node-touch
 var touch = require("touch")
 Gives you the following functions:
 
-touch(filename, options, cb)
-touch.sync(filename, options)
+touch(filePath, options, cb)
+touch.sync(filePath, options)
 touch.ftouch(fd, options, cb)
 touch.ftouchSync(fd, options)
 All the options objects are optional.
@@ -70,7 +70,7 @@ Currently there are three ways to write a file:
 fs.write(fd, buffer, offset, length, position, callback)
 
 You need to wait for the callback to ensure that the buffer is written to disk. It's not buffered.
-fs.writeFile(filename, data, [encoding], callback)
+fs.writeFile(filePath, data, [encoding], callback)
 
 All data must be stored at the same time; you cannot perform sequential writes.
 fs.createWriteStream(path, [options])

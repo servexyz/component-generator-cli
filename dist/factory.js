@@ -30,7 +30,7 @@ function grabValueOfKeyFromObject(key, obj) {
   }
 }
 
-async function parseFormat(structure = "solo-test-lazy", extensions = "vanilla") {
+function parseFormat(structure = "solo-test-lazy", extensions = "vanilla") {
   /*
     ------------------------------------------
     The following two examples are equivalent
@@ -56,6 +56,7 @@ async function parseFormat(structure = "solo-test-lazy", extensions = "vanilla")
   }
   return flag;
 }
+
 async function interpolateTemplate(component) {}
 function createDirectory(directoryName, creationLocation = "/") {
   let where = path.join(process.cwd(), creationLocation, directoryName);
@@ -63,26 +64,38 @@ function createDirectory(directoryName, creationLocation = "/") {
     err ? console.error(`createDirectory failed: ${err}`) : console.log(`Directory: ${where} was created`);
   });
 }
-function createFile(fileName, creationLocation = "/") {
-  fs.writeFile(fileName, "", "utf-8", error => {
-    error ? console.error("createFile() failed") : log(`${fileName} was created here: ${process.cwd()}/${creationLocation}/${fileName}`);
+
+function createFile(filePath, creationLocation = "/") {
+  fs.writeFile(filePath, "", "utf-8", error => {
+    error ? console.error("createFile() failed") : log(`${filePath} was created here: ${process.cwd()}/${creationLocation}/${filePath}`);
   });
+}
+async function createFileFactory(components, creationLocation = "/") {
+  try {
+    for (let c of components) {
+      createFile(c);
+    }
+  } catch (error) {
+    console.error(`createFileFactory failed. ${error}`);
+  }
 }
 async function factory(components, rootCreationLocation = "/") {
   log(`process.cwd(): ${process.cwd()}`);
-  let location = path.join(process.cwd(), rootCreationLocation, components);
   let createdDirectories = [];
-  for (let c of components) {
-    createDirectory(c, creationLocation);
-    createdDirectories.push(c);
-  }
-  try {
-    let f = await createFilesFactory(components);
-    log(`directories: ${f}`);
-    return f;
-  } catch (error) {
-    console.error(`Factory failed. ${error}`);
-    return false;
+  if (parseFormat()) {
+    try {
+      for (let c of components) {
+        let location = path.join(process.cwd(), rootCreationLocation);
+        createDirectory(c, location);
+        let newDirectory = c + location;
+        log(`newDirectory: ${newDirectory}`);
+        createdDirectories.push(newDirectory);
+      }
+      return true;
+    } catch (error) {
+      console.error(`Factory failed. ${error}`);
+      return false;
+    }
   }
 }
 module.exports = factory;

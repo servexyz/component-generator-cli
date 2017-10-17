@@ -31,7 +31,7 @@ function grabValueOfKeyFromObject(
   }
 }
 
-async function parseFormat(
+function parseFormat(
   structure: Array<string> | string = "solo-test-lazy",
   extensions: Array<string> | string = "vanilla"
 ) {
@@ -61,45 +61,59 @@ async function parseFormat(
   }
   return flag;
 }
+
 async function interpolateTemplate(component) {}
-function createDirectory(
-  directoryName: string,
-  creationLocation: string = "/"
-) {
-  let where = path.join(process.cwd(), creationLocation, directoryName);
-  mkdirp(where, err => {
+function createDirectory(directoryName: string) {
+  mkdirp(directoryName, err => {
     err
       ? console.error(`createDirectory failed: ${err}`)
-      : console.log(`Directory: ${where} was created`);
+      : console.log(`${directoryName} was created.`);
   });
 }
-function createFile(fileName: string, creationLocation: string = "/") {
-  fs.writeFile(fileName, "", "utf-8", error => {
+
+function createFile(filePath: string) {
+  fs.writeFile(filePath, "", "utf-8", error => {
     error
       ? console.error("createFile() failed")
       : log(
-          `${fileName} was created here: ${process.cwd()}/${creationLocation}/${fileName}`
+          `${filePath} was created here: ${process.cwd()}/${creationLocation}/${filePath}`
         );
   });
+}
+async function createFileFactory(
+  components: Array<string>,
+  creationLocation: string = "/"
+) {
+  try {
+    for (let c of components) {
+      createFile(c);
+    }
+  } catch (error) {
+    console.error(`createFileFactory failed. ${error}`);
+  }
 }
 async function factory(
   components: Array<string>,
   rootCreationLocation: string = "/"
 ) {
-  log(`process.cwd(): ${process.cwd()}`);
-  try {
-    let createdDirectories: Array<string> = [];
-    for (let c of components) {
-      let location = path.join(process.cwd(), rootCreationLocation, components);
-      createDirectory(c, creationLocation);
-      createdDirectories.push(c);
+  /* Note:
+    path.join will only occur in factory to ensure no conflicts. Treated similar to dumb components with no state.
+    */
+  let createdDirectories: Array<string> = [];
+  if (parseFormat()) {
+    try {
+      for (let c of components) {
+        let location = path.join(process.cwd(), rootCreationLocation);
+        createDirectory(c, location);
+        let newDirectory = c + location;
+        log(`newDirectory: ${newDirectory}`);
+        createdDirectories.push(newDirectory);
+      }
+      return true;
+    } catch (error) {
+      console.error(`Factory failed. ${error}`);
+      return false;
     }
-    let f = await createFilesFactory(components);
-    log(`directories: ${f}`);
-    return f;
-  } catch (error) {
-    console.error(`Factory failed. ${error}`);
-    return false;
   }
 }
 module.exports = factory;
