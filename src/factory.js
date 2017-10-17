@@ -3,6 +3,7 @@ const path = require("path");
 const empty = require("is-empty");
 const mkdirp = require("mkdirp");
 const log = console.log;
+const chalk = require("chalk");
 const { COMPONENT, COMPONENT_EXPORT } = require("./templates.js");
 
 var formatFilePath: string = path.join(__dirname, "/format.json");
@@ -45,12 +46,14 @@ function parseFormat(structure: Array<string> | string = "solo-test-lazy") {
 }
 
 // async function interpolateFileContent(component) {}
-async function interpolateFileNames(component: string) {
+function interpolateFileNames(component: string): Array<string> {
   let struct: Array<string> = formatStructureArr; //this global var was instantiated in parseFormat()
-  struct.map(val => {
-    return val.replace("Component", component);
+  let regex = /([A-Z])\w+/;
+  let fileNames: Array<string> = struct.map(file => {
+    file.replace(regex, component);
   });
-  log(`Struct: ${struct}`);
+  log(`\n\nfileNames in interpolateFileNames: ${String(fileNames)}\n\n`);
+  return fileNames;
 }
 function createDirectory(directoryName: string) {
   mkdirp(directoryName, err => {
@@ -63,54 +66,37 @@ function createDirectory(directoryName: string) {
 function createFile(filePath: string) {
   fs.writeFile(filePath, "", "utf-8", error => {
     error
-      ? console.error("createFile() failed")
-      : log(
-          `${filePath} was created here: ${process.cwd()}/${creationLocation}/${filePath}`
-        );
+      ? console.error(`createFile() failed. ${error}`)
+      : log(`${filePath} was created`);
   });
 }
-async function createComponentFiles(
+function createComponentFiles(
   component: string,
   componentDirectory: string = "/"
 ) {
   //Note: need to mutate c to include the entire path
-  log(`component: ${component} && dir: ${componentDirectory}`);
-  try {
-    //TODO: call interpolate strings
-    let filePaths: Array<string> = interpolateFileNames(component);
-    for (let f of filePaths) {
-      let here = path.join(process.cwd(), f);
-      createFile(here);
-      log(`Here: ${here}`);
-    }
-  } catch (error) {
-    console.error(`createComponentFiles failed. ${error}`);
+  log(`component: ${chalk.red(component)} && dir: ${componentDirectory}`);
+  //TODO: call interpolate strings
+  let filePaths: Array<string> = interpolateFileNames(component);
+  log(`\nfilePaths: ${String(filePaths)}`);
+  for (let f of filePaths) {
+    let here = path.join(componentDirectory, f);
+    createFile(here);
+    log(`${chalk.yellow("Here: " + here)}`);
   }
 }
-async function factory(
-  components: Array<string>,
-  rootCreationLocation: string = "/"
-) {
-  /*
-    Note: path.join will only occur in factory to ensure no conflicts. Treated similar to dumb components with no state.
-  */
-  let createdDirectories: Array<string> = [];
+function factory(components: Array<string>) {
+  let flag: boolean = false;
   if (parseFormat()) {
-    try {
-      for (let c of components) {
-        let location = path.join(process.cwd(), rootCreationLocation);
-        createDirectory(c, location);
-        let newDirectory = c + location;
-        log(`newDirectory: ${newDirectory}`);
-        createdDirectories.push(newDirectory);
-        createComponentFiles(c, newDirectory);
-        //todo: call createFilesFactory
-      }
-      return true;
-    } catch (error) {
-      console.error(`Factory failed. ${error}`);
-      return false;
+    for (let c of components) {
+      let location = process.cwd();
+      let newDirectory = location + c + "/";
+      createDirectory(c, location);
+      log(`newDirectory: ${newDirectory}`);
+      createComponentFiles(c, newDirectory);
     }
+    flag = true;
   }
+  return flag;
 }
 module.exports = factory;
