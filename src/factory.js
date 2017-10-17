@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const empty = require("is-empty");
+const mkdirp = require("mkdirp");
 const log = console.log;
 const { COMPONENT, COMPONENT_EXPORT } = require("./templates.js");
 
@@ -61,6 +62,14 @@ async function parseFormat(
   return flag;
 }
 async function interpolateTemplate(component) {}
+function createDirectory(directoryName: string) {
+  let where = path.join(process.cwd(), directoryName);
+  mkdirp(where, err => {
+    err
+      ? console.error(`createDirectory failed: ${err}`)
+      : console.log(`Directory: ${where} was created`);
+  });
+}
 function createFile(fileName: string, creationLocation: string = "/") {
   fs.writeFile(fileName, "", "utf-8", error => {
     error
@@ -70,17 +79,20 @@ function createFile(fileName: string, creationLocation: string = "/") {
         );
   });
 }
+async function createFilesFactory(directories: Array<string>) {
+  for (let dir of directories) {
+    createDirectory(dir);
+  }
+}
 // function parseTemplate(template: string, componentName: string) {}
 
 async function factory(
   directoryNames: Array<string>,
   rootCreationLocation: string = "/"
 ) {
-  log(`inside factory`);
+  let directories = directoryNames;
+  let location = path.join(process.cwd(), rootCreationLocation);
   try {
-    let locale = path.join(process.cwd(), rootCreationLocation);
-    log(`directoryNames: ${JSON.stringify(directoryNames)}`);
-    return directoryNames;
   } catch (error) {
     console.error(`Factory failed. ${error}`);
     return false;

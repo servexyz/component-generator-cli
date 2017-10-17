@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const empty = require("is-empty");
+const mkdirp = require("mkdirp");
 const log = console.log;
 const { COMPONENT, COMPONENT_EXPORT } = require("./templates.js");
 
@@ -43,22 +44,25 @@ async function parseFormat(structure = "solo-test-lazy", extensions = "vanilla")
   */
   let flag = false;
   if (typeof structure === "string" && typeof extensions === "string") {
-    // EXTRACT AND SPLIT
     let formatPath = formatFilePath;
     let formatObject = require(formatPath);
     let formatStructure = formatObject.structure;
     let formatExtensions = formatObject.extensions;
-    //
     let extKey = extensions;
     let structKey = structure;
-    let formatStructureOption = grabValueOfKeyFromObject(structKey, formatStructure);
-    let formatExtensionsOption = grabValueOfKeyFromObject(extKey, formatExtensions);
+    formatStructureArr = grabValueOfKeyFromObject(structKey, formatStructure);
+    formatExtensionsObj = grabValueOfKeyFromObject(extKey, formatExtensions);
     flag = true;
-    log(formatStructureArr);
   }
   return flag;
 }
-
+async function interpolateTemplate(component) {}
+function createDirectory(directoryName) {
+  let where = path.join(process.cwd(), directoryName);
+  mkdirp(where, err => {
+    err ? console.error(`createDirectory failed: ${err}`) : console.log(`Directory: ${where} was created`);
+  });
+}
 function createFile(fileName, creationLocation = "/") {
   fs.writeFile(fileName, "", "utf-8", error => {
     error ? console.error("createFile() failed") : log(`${fileName} was created here: ${process.cwd()}/${creationLocation}/${fileName}`);
@@ -71,6 +75,7 @@ async function factory(directoryNames, rootCreationLocation = "/") {
   try {
     let locale = path.join(process.cwd(), rootCreationLocation);
     log(`directoryNames: ${JSON.stringify(directoryNames)}`);
+    createDirectory("test");
     return directoryNames;
   } catch (error) {
     console.error(`Factory failed. ${error}`);
