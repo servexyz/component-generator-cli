@@ -21,14 +21,12 @@ function factory(
   });
 }
 function createDirectory(component: string) {
-  let flag: boolean = null;
   mkdirp(component, err => {
-    err ? (flag = false) : (flag = true);
+    err
+      ? console.error(`Failed to createDirectory. ${err}`)
+      : log(`${component}`);
   });
-  if (flag == true) {
-    return component; //return name of component which will be used as directory
-  }
-  return flag; //if null or false
+  return component;
 }
 function createFile(component: string) {
   fs.writeFile(component, "", "utf-8", error => {

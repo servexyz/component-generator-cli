@@ -20,14 +20,10 @@ function factory(components, fileStructure = "solo-test-lazy") {
   });
 }
 function createDirectory(component) {
-  let flag = null;
   mkdirp(component, err => {
-    err ? flag = false : flag = true;
+    err ? console.error(`Failed to createDirectory. ${err}`) : log(`${component}`);
   });
-  if (flag == true) {
-    return component; //return name of component which will be used as directory
-  }
-  return flag; //if null or false
+  return component;
 }
 function createFile(component) {
   fs.writeFile(component, "", "utf-8", error => {
