@@ -57,8 +57,8 @@ async function parseFormat(structure = "solo-test-lazy", extensions = "vanilla")
   return flag;
 }
 async function interpolateTemplate(component) {}
-function createDirectory(directoryName) {
-  let where = path.join(process.cwd(), directoryName);
+function createDirectory(directoryName, creationLocation = "/") {
+  let where = path.join(process.cwd(), creationLocation, directoryName);
   mkdirp(where, err => {
     err ? console.error(`createDirectory failed: ${err}`) : console.log(`Directory: ${where} was created`);
   });
@@ -68,19 +68,21 @@ function createFile(fileName, creationLocation = "/") {
     error ? console.error("createFile() failed") : log(`${fileName} was created here: ${process.cwd()}/${creationLocation}/${fileName}`);
   });
 }
-// function parseTemplate(template: string, componentName: string) {}
-
-async function factory(directoryNames, rootCreationLocation = "/") {
-  log(`inside factory`);
+async function factory(components, rootCreationLocation = "/") {
+  log(`process.cwd(): ${process.cwd()}`);
+  let location = path.join(process.cwd(), rootCreationLocation, components);
+  let createdDirectories = [];
+  for (let c of components) {
+    createDirectory(c, creationLocation);
+    createdDirectories.push(c);
+  }
   try {
-    let locale = path.join(process.cwd(), rootCreationLocation);
-    log(`directoryNames: ${JSON.stringify(directoryNames)}`);
-    createDirectory("test");
-    return directoryNames;
+    let f = await createFilesFactory(components);
+    log(`directories: ${f}`);
+    return f;
   } catch (error) {
     console.error(`Factory failed. ${error}`);
     return false;
   }
 }
-
 module.exports = factory;
