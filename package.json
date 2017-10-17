@@ -4,6 +4,7 @@
   "main": "index.js",
   "repository": "https://github.com/servexyz/component-generator-cli",
   "author": "alechp <me@alechp.com>",
+  "private": "false",
   "license": "MIT",
   "scripts": {
     "start": "npm run build && node dist/index.js",
