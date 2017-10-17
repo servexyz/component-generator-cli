@@ -46,7 +46,10 @@ function parseFormat(structure: Array<string> | string = "solo-test-lazy") {
 
 async function interpolateFileContent(component) {}
 async function interpolateFileNames(component: string) {
-  let struct: Array<string> = formatStructureArr;
+  let struct: Array<string> = formatStructureArr; //this global var was instantiated in parseFormat()
+  struct.map(val => {
+    return val.replace("Component", component);
+  });
 }
 function createDirectory(directoryName: string) {
   mkdirp(directoryName, err => {
