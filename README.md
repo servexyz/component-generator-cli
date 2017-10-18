@@ -4,5 +4,5 @@
 
 ## Install
 ```
-npm i -g component-factory-cli
+npm i -g @bubblegum/component-factory-cli
 ```
