@@ -1,8 +1,10 @@
 {
   "name": "@bubblegum/component-generator-cli",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "main": "index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": "https://github.com/servexyz/component-generator-cli",
   "author": {
     "name": "Alec Hale-Pletka",
