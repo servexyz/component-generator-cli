@@ -11,14 +11,16 @@ npm i -g @bubblegum/component-factory-cli
 
 ## Run
 ```bash
-cgc [...components: Array<string> | string]
+cgc  #---> this starts the component-generator-cli
+m #----> this is the command to type when you see $component-generator-cli
 ```
 
 ## Example
 
 **Input**
 ```bash
-cgc abc def
+cgc
+m abc def
 ```
 
 **Output**
