@@ -1,9 +1,19 @@
 {
-  "name": "component-generator-cli",
+  "name": "@bubblegum/component-generator-cli",
   "version": "0.5.4",
-  "main": "./dist/index.js",
+  "main": "index.js",
+  "files": ["dist"],
   "repository": "https://github.com/servexyz/component-generator-cli",
-  "author": "alechp <me@alechp.com>",
+  "author": {
+    "name": "Alec Hale-Pletka",
+    "email": "alechp <me@alechp.com>"
+  },
+  "bin": {
+    "cgc": "dist/index.js"
+  },
+  "engines": {
+    "node": ">=8"
+  },
   "license": "MIT",
   "scripts": {
     "start": "npm run build && node dist/index.js",
