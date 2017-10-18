@@ -1,7 +1,7 @@
 {
   "name": "@bubblegum/component-generator-cli",
   "version": "0.5.2",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "repository": "https://github.com/servexyz/component-generator-cli",
   "author": "alechp <me@alechp.com>",
   "license": "MIT",
