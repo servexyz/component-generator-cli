@@ -1,5 +1,7 @@
 # Component Generator CLI
 
+### STATUS: Not ready for use. Technically works right now, but sloppy experience.
+
 > Purpose of this is to create scaffolding for multiple components easily
 
 ## Install
