@@ -1,6 +1,6 @@
 {
   "name": "@bubblegum/component-generator-cli",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "main": "index.js",
   "repository": "https://github.com/servexyz/component-generator-cli",
   "author": {
