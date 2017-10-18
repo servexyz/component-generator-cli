@@ -6,7 +6,7 @@
 
 ## Install
 ```
-npm i -g @bubblegum/component-factory-cli
+npm i -g @bubblegum/component-generator-cli
 ```
 
 ## Run

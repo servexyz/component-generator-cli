@@ -6,7 +6,7 @@ const path = require("path");
 const chalk = require("chalk");
 const log = console.log;
 
-function factory(components, fileStructure = "solo-test-lazy") {
+function generator(components, fileStructure = "solo-test-lazy") {
   components.map(c => {
     let dir = createDirectory(c);
     log(`Dir: ${dir}`);
@@ -14,7 +14,7 @@ function factory(components, fileStructure = "solo-test-lazy") {
       let files = createFiles(fileStructure, c, dir);
       return files;
     } catch (error) {
-      console.error(`${chalk.red("createFiles in factory failed.")} ${error}`);
+      console.error(`${chalk.red("createFiles in generator failed.")} ${error}`);
     }
   });
 }
@@ -58,4 +58,4 @@ function grabValueOfKeyFromObject(key, obj) {
   }
 }
 
-module.exports = factory;
+module.exports = generator;
