@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // @flow
 
 const factory = require("./factory");
