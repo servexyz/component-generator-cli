@@ -15,19 +15,19 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "npm run build && node dist/index.js",
-    "build": "babel src --out-dir dist --copy-files",
-    "flow": "flow check"
+    "start": "node index.js",
+    "test": "jest"
   },
   "dependencies": {
-    "is-empty": "^1.2.0",
-    "mkdirp": "^0.5.1",
+    "component-generator-lib": "^1.0.2",
     "vorpal": "^1.12.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-flow": "^6.23.0",
-    "flow-bin": "^0.56.0"
+    "jest": "^21.2.1"
+  },
+  "jest": {
+    "verbose": true,
+    "bail": true,
+    "modulePathIgnorePatterns": ["deleteMe"]
   }
 }

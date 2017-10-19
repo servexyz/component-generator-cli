@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-// @flow
 
-const generator = require("./generator");
+const generator = require("component-generator-lib");
 const vorpal = require("vorpal")();
 
 vorpal
