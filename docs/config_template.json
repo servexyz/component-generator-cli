@@ -1,4 +1,4 @@
-"compgen": {
+{
   "files": {
     "names": {
       "key": [],
@@ -19,4 +19,9 @@
       "dir": ,
     },
   ],
+  "ignoreParents": [
+    "node_modules",
+    "__tests__",
+    "src"
+  ]
 }
