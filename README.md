@@ -1,37 +1,37 @@
 # Component Generator CLI
 
-### STATUS: Not ready for use. Technically works right now, but sloppy experience.
+### STATUS: Not ready for use.
 
 > Purpose of this is to create scaffolding for multiple components easily
 
-## Install
+## Getting Started
+### Install
 ```
-npm i -g @bubblegum/component-generator-cli
+npm i -g component-generator-cli
 ```
 
-## Run
-```bash
-cgc  #---> this starts the component-generator-cli
-m #----> this is the command to type when you see $component-generator-cli
-```
+### Use
+`compgen` starts the component-generator
+
+
+#### Commands
+
+> How to read commands below
+`command`
+**--options [--optionAlias] text-to-pass-to-option-flag** → What will happen
+
+
+`add`
+**-- preview [--p]** → See changes before executing
+**-- config  [--c] /path/to/config.json** →
+
+`fill-current`
+**-- overwrite** →
+
+`undo`
+
+----
 
 ## Example
 
-**Input**
-```bash
-cgc
-m abc def
-```
-
-**Output**
-```
-./the-directory-where-cgc-was-executed/
-abc/
-* index.js
-* abc.js
-* abc.test.js
-def/
-* index.js
-* abc.js
-* abc.test.js
-```
+<REPLACE EXAMPLE WITH GIF>
