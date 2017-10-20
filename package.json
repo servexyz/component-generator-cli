@@ -8,7 +8,7 @@
     "email": "alechp <me@alechp.com>"
   },
   "bin": {
-    "cgc": "dist/index.js"
+    "compgen": "dist/index.js"
   },
   "engines": {
     "node": ">=8"

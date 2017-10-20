@@ -27,7 +27,7 @@ npm i -g component-generator-cli
 ----
 ##### Detailed
 
-###### `compgen~$ add --preview --config`
+###### `compgen~$ add [...components to add] --preview --config /path/to/config.json`
 >  `add` → Generate variadic number of components
 
   | Option | Alias | Arguments | Description |
@@ -36,29 +36,28 @@ npm i -g component-generator-cli
   | --config | --c | /path/to/config.json → Overwrite [defaults](https://github.com/servexyz/component-generator-lib/blob/master/format.json) with your own [custom config](./docs/config_template.json) | Specify your own config for file names, extensions, code-templates, ignored directories and more |
 
 
-###### `compgen~$ add --preview --config`
-> `fill-current`→ Fill current directories
+###### `compgen~$ fill-current`
+> `fill-current`→ Fill current directories with template files (useful if you've already `mkdir`'d all of your components)
 
-| Option | Alias | Description |
-|:-------|:------|:------------|
-| --overwrite | --o | Replaces matching files with new content
+  | Option | Alias | Description |
+  |:-------|:------|:------------|
+  | --overwrite | --o | Replaces matching files with new content
 
 
-###### `compgen~$ add --preview --config`
+###### `compgen~$ undo`
 > `undo` → Revert all previous actions
 
-| Option | Alias | Description |
-|:-------|:------|:------------|
-| N/A |  | |
+  | Option | Alias | Description |
+  |:-------|:------|:------------|
+  | N/A |  | |
 
 ----
-
 
 #### Config
 
 ##### Resources
-* [Configuration template](./docs/config_template.json) - Modify for your own use
 * [Configuration format](https://github.com/servexyz/component-generator-lib/blob/master/format.json) - Defaults used by the component generator
+* [Configuration template](./docs/config_template.json) - Modify for your own use
 
 
 ## Example
