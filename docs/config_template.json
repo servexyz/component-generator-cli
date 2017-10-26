@@ -1,0 +1,27 @@
+{
+  "files": {
+    "names": {
+      "key": [],
+    },
+    "extensions": {
+      "key": []
+    },
+    "templates": {
+      "Component": "__dirname/path/to/Component.js",
+      "Component.test": "__dirname/path/to/Component.test.js",
+      "Component.style": "__dirname/path/to/Component.css",
+      "index": "__dirname/path/to/index.js"
+    }
+  },
+  "components": [
+    {
+      "name": ,
+      "dir": ,
+    },
+  ],
+  "ignoreParents": [
+    "node_modules",
+    "__tests__",
+    "src"
+  ]
+}
