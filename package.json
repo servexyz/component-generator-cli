@@ -19,7 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "component-generator-lib": "^1.0.2",
+    "component-generator-lib": "^1.0.4",
     "vorpal": "^1.12.0"
   },
   "devDependencies": {
@@ -28,6 +28,8 @@
   "jest": {
     "verbose": true,
     "bail": true,
-    "modulePathIgnorePatterns": ["deleteMe"]
+    "modulePathIgnorePatterns": [
+      "deleteMe"
+    ]
   }
 }
