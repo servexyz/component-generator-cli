@@ -1,6 +1,10 @@
 # Component Generator CLI
 
 ### STATUS: Not ready for use.
+A poem to discourage you:
+>Do not download in a pack. Do not download in a gem. Please do not download, no matter where or when. 
+
+------
 
 > Purpose of this is to create scaffolding for multiple components easily
 
